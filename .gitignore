@@ -41,7 +41,7 @@ build/
 GNL-Enet/x64
 GNL-Enet/ENet/x64
 GNL-Enet/Client/x64
-
+GNL-Enet/Server/x64 
 Binaries/
 
 *.dblite

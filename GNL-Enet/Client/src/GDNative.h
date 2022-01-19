@@ -10,6 +10,8 @@
 #include "Client.h"
 #include <gen/Object.hpp>
 #include <enet/enet.h>
+#include "Packet.h"
+#include <deque>
 
 namespace godot {
 	class NetNode : public Node {
@@ -24,8 +26,13 @@ namespace godot {
 		void _process(float delta);
 
 		void Connect(String host, uint16_t port);
-	
+		
+		void PreparePacket();
+
+
 	private:
-		ENetHost*			enet_host;
+		ENetHost*				enet_host;
+		std::deque<Packet>		m_pkt_container;
+		Packet					m_pkt_out;
 	};
 }

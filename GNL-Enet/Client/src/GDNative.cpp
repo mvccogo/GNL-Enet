@@ -37,13 +37,19 @@ void NetNode::_process(float delta) {
 			case ENET_EVENT_TYPE_RECEIVE:
 				godot::Godot::print("Received packet from host...\n");
 
-				emit_signal("packet_received", static_cast<int> (m_pktIn.header.cmdID))
-
-
+				Packet pkt;
+				pkt.set_packet_data(event.packet->data, event.packet->dataLength);
+				m_pkt_container.push_front(pkt);
+				enet_packet_destroy(event.packet);
+				
 		}
 
 
 
+	}
+	if (!m_pkt_container.empty()) {
+		// Keep emitting signals until the packet is dealt with.
+		emit_signal("packet_received", static_cast<int> (m_pkt_container.back().get_packet_cmdid()));
 	}
 
 
