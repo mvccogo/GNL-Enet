@@ -37,3 +37,6 @@
 
 # Build folder
 build/
+
+GNL-Enet/x64
+GNL-Enet/ENet/x64
