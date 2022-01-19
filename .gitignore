@@ -31,12 +31,5 @@
 *.out
 *.app
 
-# .vs Folder
+# vs Folder
 .vs/
-
-# Temporary folder
-ENet/ENetVS/x64/
-
-# .pdb
-*.pdb
-
