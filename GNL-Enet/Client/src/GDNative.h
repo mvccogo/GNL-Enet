@@ -9,7 +9,7 @@
 #include <core/Ref.hpp>
 #include "Client.h"
 #include <gen/Object.hpp>
-
+#include <enet/enet.h>
 
 namespace godot {
 	class NetNode : public Node {
@@ -23,7 +23,9 @@ namespace godot {
 		void _init();
 		void _process(float delta);
 
+		void Connect(String host, uint16_t port);
+	
 	private:
-
+		ENetHost*			enet_host;
 	};
 }
