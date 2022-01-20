@@ -37,7 +37,10 @@ public:
 
 		// Cache the location towards the end of the vector where the pulled data starts
 		size_t i = pkt.enet_packet->dataLength - sizeof(DataType);
-
+		if (i < 0) {
+			printf("Corrupted packet, ignoring output operation");
+			return pkt;
+		};
 		// Physically copy the data from the vector into the user variable
 		std::memcpy(&data, pkt.enet_packet->data + i, sizeof(DataType));
 

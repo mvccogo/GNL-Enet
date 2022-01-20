@@ -93,7 +93,7 @@ else:
 cpp_library += '.' + str(bits)
 
 # make sure our binding library is properly includes
-env.Append(CPPPATH=['.', 'enet/include','GNL-Enet/Client/include',godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/'])
+env.Append(CPPPATH=['.', 'enet/include','GNL-Enet/Client/src','GNL-Enet/Common/src',godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/'])
 env.Append(LIBPATH=[cpp_bindings_path + 'bin/', 'GNL-Enet/x64/Debug/'])
 env.Append(LIBS=[cpp_library, 'ENet', 'winmm', 'ws2_32'])
 

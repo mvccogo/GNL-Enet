@@ -2,7 +2,7 @@
 
 enum CMD : uint16_t {
 	Invalid,
-	AcceptTCPConnection,
+	AcceptConnection,
 	SelfEnterWorld,
 	PlyEnterWorld,
 	ServerMessage,

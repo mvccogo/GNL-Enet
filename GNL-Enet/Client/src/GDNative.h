@@ -12,6 +12,7 @@
 #include <enet/enet.h>
 #include "Packet.h"
 #include <deque>
+#include <NetCommands.h>
 
 namespace godot {
 	class NetNode : public Node {
@@ -27,12 +28,32 @@ namespace godot {
 
 		void Connect(String host, uint16_t port);
 		
+		void SendPacket();
 		void PreparePacket();
+		void FinishReading();
+		void AssemblePacket(enet_uint32 flags);
 
+		// Write commands
+		void WriteCmd(uint16_t cmdID);
+		void WriteShort(uint16_t data);
+		void WriteLong(uint32_t data);
+		void WriteLongLong(uint64_t data);
+		void WriteString(String data);
+		void WriteDouble(double_t data);
+
+		// Read Commands
+
+		uint16_t	ReadShort();
+		uint32_t	ReadLong();
+		uint64_t	ReadLongLong();
+		String		ReadString();
+		double_t    ReadDouble();
 
 	private:
-		ENetHost*							enet_host;
-		std::deque<SerializablePacket>		m_pkt_container;
-		//SerializablePacket					m_pkt_out;
+		ENetHost*								enet_host;
+		ENetPeer*								server_peer;
+		std::deque<SerializablePacket>			m_pkt_in;
+		std::deque<SerializablePacket>			m_pkt_out;
+		//SerializablePacket						m_pkt_out_temp;
 	};
 }

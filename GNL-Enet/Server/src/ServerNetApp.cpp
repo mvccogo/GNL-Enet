@@ -12,7 +12,7 @@ bool ServerNetApp::Start(uint16_t port) {
 
 	// This runs inside a thread!!
 	m_enet_addr.host = ENET_HOST_ANY;
-	m_enet_addr.port = 3223;
+	m_enet_addr.port = port;
 	// This doesn't need to be free'd automatically, will be destroyed at the end.
 	m_enet_host = enet_host_create(&m_enet_addr, 32, 2, 0, 0);
 
@@ -38,6 +38,7 @@ void ServerNetApp::Run() {
 					m_mux.lock();
 					m_peers.insert(std::make_pair(event.peer->connectID, event.peer));
 					m_mux.unlock();
+
 					break;
 				case ENET_EVENT_TYPE_DISCONNECT:
 					m_mux.lock();
@@ -45,16 +46,17 @@ void ServerNetApp::Run() {
 					m_mux.unlock();
 					break;
 				case ENET_EVENT_TYPE_RECEIVE:
-					if(!m_inbound_queue.try_enqueue(event)) printf("couldnt enqueue");
 					break;
+
 			}
+			if (!m_inbound_queue.try_enqueue(event)) printf("couldnt enqueue");
 		}
 		
 		if (m_outbound_queue.try_dequeue(out)) {
-			enet_peer_send(out.peer, 0, out.packet);
 			// There are still outbound packets...
-			if (m_peers.find(out.peer->connectID) != m_peers.end()); // Is this needed?
-				
+			if (m_peers.find(out.peer->connectID) != m_peers.end()) {	// Is this needed?
+				enet_peer_send(out.peer, 0, out.packet);
+			}
 		}
 	}
 

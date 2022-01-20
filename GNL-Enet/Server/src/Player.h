@@ -8,8 +8,10 @@ class Character;
 class Player {
 
 public: 
-	Player() {};
+	Player(std::shared_ptr<ENetPeer> peer) : m_enet_peer(peer) {};
 	~Player() {}
+
+	void SetCharacter(std::shared_ptr<Character> character) { m_character = character; }
 
 private:
 

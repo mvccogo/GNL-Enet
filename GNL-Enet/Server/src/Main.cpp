@@ -4,28 +4,37 @@
 
 int main(int argc, char** argv) {
 
-	Server server(2004);
+	Server server;
 
 
 	std::thread enet_thread([&]() {
-		server.Start();
+		server.Start(2004);
 		});
 
 	bool stopFlag = false;
 	ENetEvent incoming_event;
 	while (!stopFlag) {
 
-		
-		bool test = server.GetNetApp()->GetInboundQueue()->try_dequeue(incoming_event);
-		if (test && incoming_event.type == ENET_EVENT_TYPE_RECEIVE) {
-			server.OnPacket(incoming_event.peer->connectID, incoming_event.packet);
-		}
-	
+		if (server.GetNetApp()->GetInboundQueue()->try_dequeue(incoming_event)) {
+			switch (incoming_event.type) {
+			case ENET_EVENT_TYPE_RECEIVE:
+				server.OnPacket(incoming_event.peer->connectID, incoming_event.packet);
+				break;
+			case ENET_EVENT_TYPE_CONNECT:
+				server.OnConnect(incoming_event.peer->connectID);
+				break;
+			case ENET_EVENT_TYPE_DISCONNECT:
+				server.OnDisconnect(incoming_event.peer->connectID);
+				break;
 
+
+			}
+
+
+
+		}
 
 	}
-
-
 
 
 

@@ -10,17 +10,21 @@ class ServerNetApp;
 class Server {
 	public:
 
-		Server(uint16_t port);
+		Server();
 		~Server();
 
-		void Start() {
-			m_server_net_app->Start(2004);
+		void Start(uint16_t port) {
+			m_server_net_app->Start(port);
 			m_server_net_app->Run();
 		}
 
-		std::shared_ptr<ServerNetApp> GetNetApp() { return m_server_net_app; }
+		std::shared_ptr<ServerNetApp>	GetNetApp() { return m_server_net_app; }
+		std::shared_ptr<Player>			AddPlayer(Player&& ply) { m_players.push_back(ply); return std::shared_ptr<Player>(&m_players.back()); }
+
 
 		void OnPacket(uint32_t peerID, ENetPacket* packet);
+		void OnConnect(uint32_t peerID);
+		void OnDisconnect(uint32_t peerID);
 
 		void SendPacket(uint32_t peerID, ENetPacket* packet);
 

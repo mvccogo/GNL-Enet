@@ -1,8 +1,12 @@
 #include "World.h"
 #include "Character.h"
 #include "NetCommands.h"
+#include "enet/enet.h"
+#include "Packet.h"
+#include "Server.h"
 
 using namespace std;
+class Server;
 //
 //World::World() {
 //
@@ -23,16 +27,16 @@ void World::RemoveChaFromWorld(uint32_t chaID) {
 }
 
 void World::FlagMoveUpdate(Character& cha) {
-	/*
-	Packet pkt;
-	pkt.header.cmdID = CMD::MovePlayer;
-	pkt << cha.GetID();
-	pkt << cha.GetPosX();
-	pkt << cha.GetPosY();
+	auto enet_packet = enet_packet_create("", 0, ENET_PACKET_FLAG_RELIABLE);
+	SerializablePacket spkt(enet_packet);
 
+	spkt << cha.GetID();
+	spkt << cha.GetPosX();
+	spkt << cha.GetPosY();
+	spkt << CMD::MovePlayer;
 	for (auto i = m_chaMap.begin(); i != m_chaMap.end(); i++) {
 		if (i->second.GetID() == cha.GetID()) continue;
-		i->second.GetTCPConnection()->SendPacket(pkt);
+		GetServer()->SendPacket(i->second.GetID(), spkt.enet_packet);
 	}
-	*/
+	
 }
