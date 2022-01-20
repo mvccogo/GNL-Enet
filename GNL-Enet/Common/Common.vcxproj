@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\ConcurrentQueue.h" />
+    <ClInclude Include="src\NetCommands.h" />
     <ClInclude Include="src\NetCommon.h" />
     <ClInclude Include="src\Packet.h" />
   </ItemGroup>

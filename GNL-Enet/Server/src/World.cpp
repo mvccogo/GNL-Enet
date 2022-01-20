@@ -1,6 +1,6 @@
 #include "World.h"
 #include "Character.h"
-
+#include "NetCommands.h"
 
 using namespace std;
 //
@@ -23,6 +23,7 @@ void World::RemoveChaFromWorld(uint32_t chaID) {
 }
 
 void World::FlagMoveUpdate(Character& cha) {
+	/*
 	Packet pkt;
 	pkt.header.cmdID = CMD::MovePlayer;
 	pkt << cha.GetID();
@@ -33,5 +34,5 @@ void World::FlagMoveUpdate(Character& cha) {
 		if (i->second.GetID() == cha.GetID()) continue;
 		i->second.GetTCPConnection()->SendPacket(pkt);
 	}
-
+	*/
 }

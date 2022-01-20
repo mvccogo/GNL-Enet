@@ -1,15 +1,18 @@
 #pragma once
 #pragma once
 #include <string>
-#include "Server.h"
+//#include "Server.h"
+#include "World.h"
+#include "Player.h"
 
 class World;
+class Player;
 
 class Character {
 
 public:
-	Character();
-	~Character();
+	Character(std::shared_ptr<Player> player) : m_player(player){};
+	~Character() {};
 
 
 	void SetPos(double_t x, double_t y);
@@ -24,13 +27,13 @@ public:
 
 
 	uint16_t GetID() { return m_ID; }
-	void SetTCPConnection(std::shared_ptr<NetLib::TCPConnection<NetLib::CMD>>& ptr) { m_TCPConnection = ptr; }
-	std::shared_ptr<NetLib::TCPConnection<NetLib::CMD>> GetTCPConnection() { return m_TCPConnection; }
+	//void SetTCPConnection(std::shared_ptr<NetLib::TCPConnection<NetLib::CMD>>& ptr) { m_TCPConnection = ptr; }
+	//std::shared_ptr<NetLib::TCPConnection<NetLib::CMD>> GetTCPConnection() { return m_TCPConnection; }
 
 
 
 private:
-	std::shared_ptr<NetLib::TCPConnection<NetLib::CMD>>			m_TCPConnection;
+	std::shared_ptr<Player>	m_player;
 	std::string				m_szName;
 	uint16_t				m_ID;
 	uint16_t				m_curMapID;
