@@ -1,6 +1,6 @@
 
 #include "ServerNetApp.h"
-
+#include <Packet.h>
 bool ServerNetApp::Start(uint16_t port) {
 
 
@@ -35,17 +35,26 @@ void ServerNetApp::Run() {
 		if (enet_return > 0) {
 			switch (event.type) {
 				case ENET_EVENT_TYPE_CONNECT:
-					m_peers.insert(std::make_pair(event.peer->connectID, *event.peer));
+					m_mux.lock();
+					m_peers.insert(std::make_pair(event.peer->connectID, event.peer));
+					m_mux.unlock();
+					break;
 				case ENET_EVENT_TYPE_DISCONNECT:
+					m_mux.lock();
 					m_peers.erase(event.peer->connectID);
+					m_mux.unlock();
+					break;
 				case ENET_EVENT_TYPE_RECEIVE:
-					m_inbound_queue.try_enqueue(event);
+					if(!m_inbound_queue.try_enqueue(event)) printf("couldnt enqueue");
+					break;
 			}
 		}
-
-		if (!m_outbound_queue.try_dequeue(out)) {
+		
+		if (m_outbound_queue.try_dequeue(out)) {
+			enet_peer_send(out.peer, 0, out.packet);
 			// There are still outbound packets...
-			enet_peer_send(&out.peer, 0, &out.packet);
+			if (m_peers.find(out.peer->connectID) != m_peers.end()); // Is this needed?
+				
 		}
 	}
 

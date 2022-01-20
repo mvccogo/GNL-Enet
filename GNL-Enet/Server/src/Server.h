@@ -20,9 +20,9 @@ class Server {
 
 		std::shared_ptr<ServerNetApp> GetNetApp() { return m_server_net_app; }
 
-		void OnPacket(uint32_t peerID, ENetPacket packet);
+		void OnPacket(uint32_t peerID, ENetPacket* packet);
 
-		void SendPacket(uint32_t peerID, ENetPacket packet);
+		void SendPacket(uint32_t peerID, ENetPacket* packet);
 
 
 	protected:

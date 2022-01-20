@@ -1,6 +1,6 @@
 #pragma once
 
-enum CMD {
+enum CMD : uint16_t {
 	Invalid,
 	AcceptTCPConnection,
 	SelfEnterWorld,

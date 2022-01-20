@@ -12,13 +12,13 @@ int main(int argc, char** argv) {
 		});
 
 	bool stopFlag = false;
+	ENetEvent incoming_event;
 	while (!stopFlag) {
 
-		ENetEvent incoming_event;
+		
 		bool test = server.GetNetApp()->GetInboundQueue()->try_dequeue(incoming_event);
-		if (test) {
-			server.OnPacket(incoming_event.peer->connectID, *incoming_event.packet);
-
+		if (test && incoming_event.type == ENET_EVENT_TYPE_RECEIVE) {
+			server.OnPacket(incoming_event.peer->connectID, incoming_event.packet);
 		}
 	
 

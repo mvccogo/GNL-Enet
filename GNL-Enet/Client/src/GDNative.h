@@ -31,8 +31,8 @@ namespace godot {
 
 
 	private:
-		ENetHost*				enet_host;
-		std::deque<Packet>		m_pkt_container;
-		Packet					m_pkt_out;
+		ENetHost*							enet_host;
+		std::deque<SerializablePacket>		m_pkt_container;
+		//SerializablePacket					m_pkt_out;
 	};
 }
