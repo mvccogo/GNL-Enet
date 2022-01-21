@@ -31,12 +31,23 @@ void World::FlagMoveUpdate(Character& cha) {
 	SerializablePacket spkt(enet_packet);
 
 	spkt << cha.GetID();
-	spkt << cha.GetPosX();
-	spkt << cha.GetPosY();
+	spkt << cha.GetVelX();
+	spkt << cha.GetVelY();
 	spkt << CMD::MovePlayer;
 	for (auto i = m_chaMap.begin(); i != m_chaMap.end(); i++) {
 		if (i->second.GetID() == cha.GetID()) continue;
 		GetServer()->SendPacket(i->second.GetID(), spkt.enet_packet);
 	}
-	
+
+}
+
+void World::Run(unsigned long long delta) {
+
+	for (auto i = m_chaMap.begin(); i != m_chaMap.end(); i++) {
+		if (i->second.GetVelX() || i->second.GetVelY()) {
+			double_t pos_increment[2] = { delta * i->second.GetVelX(), delta * i->second.GetVelY() };
+			i->second.SetPos(i->second.GetPosX() + pos_increment[0], i->second.GetPosY() + pos_increment[1]);
+		}
+	}
+
 }

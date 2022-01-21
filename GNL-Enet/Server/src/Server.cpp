@@ -29,11 +29,11 @@ void Server::OnPacket(uint32_t peerID, ENetPacket* packet) {
 	SerializablePacket spkt(packet);
 	uint16_t cmd;
 	spkt >> cmd;
-	printf("Received command from peer: %d", cmd);
+	printf("Received command from peer: %d\n", cmd);
 	switch (cmd) {
 	case CMD::Ping:
-		{
-		
+	{
+
 		std::cout << "[" << peerID << "]: requested server ping\n";
 		long long timeRec;
 		auto millisec_since_epoch = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -49,8 +49,8 @@ void Server::OnPacket(uint32_t peerID, ENetPacket* packet) {
 
 		SendPacket(peerID, spkt_out.enet_packet);
 		break;
-		
-		}
+
+	}
 	case CMD::SelfEnterWorld:
 	{
 
@@ -68,8 +68,8 @@ void Server::OnPacket(uint32_t peerID, ENetPacket* packet) {
 			pkt << i->second.GetID();
 			pkt << i->second.GetPosX();
 			pkt << i->second.GetPosY();
-			if(i->second.GetID() != cha->GetID())
-			notifylist.push_back(i->second.GetID());
+			if (i->second.GetID() != cha->GetID())
+				notifylist.push_back(i->second.GetID());
 
 		}
 
@@ -78,7 +78,7 @@ void Server::OnPacket(uint32_t peerID, ENetPacket* packet) {
 		pkt << CMD::SelfEnterWorld;
 		SendPacket(peerID, pkt.enet_packet);
 
-		
+
 
 		enet_packet = enet_packet_create("", 0, ENET_PACKET_FLAG_RELIABLE);
 		pkt.enet_packet = enet_packet;
@@ -98,16 +98,19 @@ void Server::OnPacket(uint32_t peerID, ENetPacket* packet) {
 		auto cha = m_World->m_chaMap.find(peerID);
 		if (cha != m_World->m_chaMap.end()) {
 			// Player ID found (has entered map)
-			double_t x, y;
+			double_t input_x, input_y;
 			uint32_t id;
-			spkt >> y;
-			spkt >> x;
 			spkt >> id;
+			spkt >> input_y;
+			spkt >> input_x;
+
 
 			if (id != cha->second.GetID()) {
 				cout << "Error: ID mismatch! Client: " << id << " Server: " << cha->second.GetID() << endl;
+				// This is a sanity check that can be removed 
 			}
-			cha->second.SetPos(x, y);
+
+			cha->second.SetVel(input_x, input_y);
 		}
 		break;
 	}
@@ -122,6 +125,13 @@ void Server::SendPacket(uint32_t peerID, ENetPacket* packet) {
 	out.peer = GetNetApp()->GetPeerByID(peerID);
 	out.packet = spkt_out.enet_packet;
 	GetNetApp()->GetOutboundQueue()->try_enqueue(out);
+
+}
+
+
+void Server::GameLoop(unsigned long long delta) {
+
+	m_World->Run(delta);
 
 }
 

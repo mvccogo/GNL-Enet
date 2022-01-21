@@ -22,8 +22,11 @@ public:
 	void RemoveChaFromWorld(uint32_t chaID);
 	void FlagCharUpdate(Character& cha);
 	void FlagMoveUpdate(Character& cha);
-	
-	std::shared_ptr<Server>					GetServer() { return m_server; }
+
+	void Run(unsigned long long _curTick);
+
+
+	std::shared_ptr<Server>							GetServer() { return m_server; }
 
 	std::unordered_map<uint32_t, Character>			m_chaMap;
 

@@ -4,6 +4,8 @@
 //#include "Server.h"
 #include "World.h"
 #include "Player.h"
+#include "NetCommands.h"
+
 
 class World;
 class Player;
@@ -16,12 +18,14 @@ public:
 
 
 	void SetPos(double_t x, double_t y);
+	void SetVel(double_t x, double_t y);
 	void SetWorld(std::shared_ptr<World> world) { m_World = world; }
 
 
 	double_t GetPosX() { return pos[0]; }
 	double_t GetPosY() { return pos[1]; }
-
+	double_t GetVelX() { return vel[0]; }
+	double_t GetVelY() { return vel[1]; }
 
 
 	void SetID(uint32_t id) { m_ID = id; }
@@ -40,5 +44,7 @@ private:
 	uint32_t				m_ID;
 	uint16_t				m_curMapID;
 	double_t				pos[2];
+	double_t				vel[2];
+
 	std::shared_ptr<World>  m_World;
 };

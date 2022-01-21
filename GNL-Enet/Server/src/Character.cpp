@@ -22,5 +22,12 @@ void Character::SetPos(double_t x, double_t y)
 {
 	pos[0] = x;
 	pos[1] = y;
+	//m_World->FlagMoveUpdate(*this);
+}
+
+void Character::SetVel(double_t x, double_t y)
+{
+	vel[0] = x;
+	vel[1] = y;
 	m_World->FlagMoveUpdate(*this);
 }

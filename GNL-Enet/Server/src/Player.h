@@ -7,7 +7,7 @@
 class Character;
 class Player {
 
-public: 
+public:
 	Player(std::shared_ptr<ENetPeer> peer) : m_enet_peer(peer) {};
 	~Player() {}
 

@@ -10,3 +10,12 @@ enum CMD : uint16_t {
 	Ping,
 	MessageAll
 };
+
+
+
+enum CharacterAction : uint16_t {
+	CHARACTER_START_MOVE,
+	CHARACTER_STOP_MOVE,
+	CHARACTER_INPUT_CHANGED
+
+};
