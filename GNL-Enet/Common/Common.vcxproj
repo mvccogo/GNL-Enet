@@ -147,6 +147,7 @@
     <ClInclude Include="src\NetCommands.h" />
     <ClInclude Include="src\NetCommon.h" />
     <ClInclude Include="src\Packet.h" />
+    <ClInclude Include="src\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

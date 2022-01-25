@@ -100,6 +100,8 @@ void Server::OnPacket(uint32_t peerID, ENetPacket* packet) {
 			// Player ID found (has entered map)
 			double_t input_x, input_y;
 			uint32_t id;
+			unsigned long tickNo;
+			spkt >> tickNo;
 			spkt >> id;
 			spkt >> input_y;
 			spkt >> input_x;
@@ -110,7 +112,10 @@ void Server::OnPacket(uint32_t peerID, ENetPacket* packet) {
 				// This is a sanity check that can be removed 
 			}
 
-			cha->second.SetVel(input_x, input_y);
+			cha->second.last_input_vector[0] = cha->second.GetInputX();
+			cha->second.last_input_vector[1] = cha->second.GetInputY();
+			cha->second.SetInput(input_x, input_y);
+			cha->second.m_ticknumber[1] = tickNo;
 		}
 		break;
 	}
